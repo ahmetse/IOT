@@ -73,3 +73,12 @@ while True:
     istemci.publish('mhdzaferemir/feeds/copkutusu1-kat', gidecekDeger)
     sleep(5)
     istemci.loop_stop()
+    
+    
+    gidecekDeger=""
+    if distance1>15 and distance2 >15:
+        gidecekDeger="#00FF00"
+    elif distance1<8 and distance2 >15:
+        gidecekDeger="#FFFF00"
+    else:
+        gidecekDeger="#FF0000"
