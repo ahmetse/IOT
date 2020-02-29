@@ -1,0 +1,75 @@
+import paho.mqtt.client as mqtt
+from time import sleep
+import sys
+import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+TRIG1 = 23
+ECHO1 = 24
+TRIG2 = 20
+ECHO2= 21
+print "HC-SR04 mesafe sensoru"
+GPIO.setup(TRIG1,GPIO.OUT)
+GPIO.setup(ECHO1,GPIO.IN)
+GPIO.setup(TRIG2,GPIO.OUT)
+GPIO.setup(ECHO2,GPIO.IN)
+pulse_start1=0
+pulse_end1=0
+distance1=0
+pulse_duration1=0
+pulse_start2=0
+pulse_end2=0
+distance2=0
+pulse_duration2=0
+
+def baglanti_saglandiginda(client, userdata, flags, rc):
+    print ('Baglandi, rc' + str(rc))
+def mesaj_geldiginde(client, userdata, msg):
+    mesaj = msg.payload
+def onPublish(client, userdata, result):
+    print (gidecekDeger)
+istemci = mqtt.Client()
+istemci.on_connect = baglanti_saglandiginda
+istemci.on_message = mesaj_geldiginde
+istemci.on_publish = onPublish
+istemci.username_pw_set("kadi", "aio") 
+istemci.connect("io.adafruit.com", port = 1883)
+while True:
+    GPIO.output(TRIG1, False)
+    time.sleep(1)
+    GPIO.output(TRIG1, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG1, False)
+    while GPIO.input(ECHO1)==0:
+        pulse_start1 = time.time()
+    while GPIO.input(ECHO1)==1:
+        pulse_end1 = time.time()
+    pulse_duration1 = pulse_end1- pulse_start1
+    distance1 = pulse_duration1 * 17150
+    distance1 = round(distance1, 2)
+    GPIO.output(TRIG2, False)
+    time.sleep(1)
+    GPIO.output(TRIG2, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG2, False)
+    while GPIO.input(ECHO2)==0:
+        pulse_start2 = time.time()
+    while GPIO.input(ECHO2)==1:
+        pulse_end2 = time.time()
+    pulse_duration2 = pulse_end2- pulse_start2
+    distance2 = pulse_duration2 * 17150
+    distance2 = round(distance2, 2)
+    istemci.loop_start()
+    #distance1 alt
+    #distance2 ust
+    gidecekDeger=0
+    if distance1>15 and distance2 >15:
+        gidecekDeger=1
+    elif distance1<8 and distance2 >15:
+        gidecekDeger=2
+    else:
+        gidecekDeger=3
+    istemci.publish('mhdzaferemir/feeds/copkutusu1-kat', gidecekDeger)
+    sleep(5)
+    istemci.loop_stop()
