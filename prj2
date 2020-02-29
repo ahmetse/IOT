@@ -1,0 +1,26 @@
+import sys
+import requests
+GPIO.setwarnings(False) 
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
+GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
+GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+while True:
+    if GPIO.input(10) == GPIO.HIGH:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "dolu"})
+    elif GPIO.input(10) == GPIO.LOW:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "bos"})
+    if GPIO.input(19) == GPIO.HIGH:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje_s2/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "dolu"})
+    elif GPIO.input(19) == GPIO.LOW:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje_s2/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "bos"})
+    if GPIO.input(21) == GPIO.HIGH:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje_s3/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "dolu"})
+    elif GPIO.input(21) == GPIO.LOW:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje_s3/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "bos"})
+    if GPIO.input(23) == GPIO.HIGH:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje_s4/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "dolu"})
+    elif GPIO.input(23) == GPIO.LOW:
+        data = requests.get("https://maker.ifttt.com/trigger/otopark_proje_s4/with/key/iJCpOXiy3T7Y86w-YTmkS33KoHvNERBSIKktvxaORXB",params={"value1": "bos"})
+    time.sleep(5)        
